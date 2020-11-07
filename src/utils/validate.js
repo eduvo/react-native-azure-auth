@@ -68,7 +68,7 @@ export function validate(rules, values) {
         let value = values[key]
         let parameterKey = aliases[key] || key
         let parameter = parameters[parameterKey]
-        if (parameter && value) {
+        if (parameter && (value !== undefined)) {
             mapped[parameter.toName || parameterKey] = value
         } else if (value && !validate) {
             mapped[key] = value
@@ -83,7 +83,7 @@ export function validate(rules, values) {
     if (incorrectlyTyped.length > 0) {
         throw new ParameterTypeError(typed, values, incorrectlyTyped)
     }
-    const missing = requiredKeys.filter((key) => !mapped[key])
+    const missing = requiredKeys.filter((key) => (mapped[key] === undefined))
     if (missing.length > 0) {
         throw new ParameterError(requiredKeys, values, missing)
     }
